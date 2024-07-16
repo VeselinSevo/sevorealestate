@@ -1,0 +1,17 @@
+{
+    "name": "vesel/sevo-real-estate",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vesel\\SevoRealEstate\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VeselinSevo",
+            "email": "veselinsevo@gmail.com"
+        }
+    ]
+}

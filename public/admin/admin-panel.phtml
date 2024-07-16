@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a279dcf9f7.js" crossorigin="anonymous"></script>
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+</head>
+
+<?php require "public/navigation.phtml"; ?>
+
+<body class="bg-gray-100">
+
+
+<div class="block lg:hidden">
+    <!-- Navbar -->
+    <div class="flex justify-between bg-gray-800 p-4 text-white">
+        <h1 class="text-xl font-bold">Admin Panel</h1>
+        <button id="toggleSidebar" class="lg:hidden">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="flex lg:flex lg:flex-row" id="container">
+    <!-- Sidebar -->
+    <div  id="sidebar" class="bg-gray-800 text-gray-100 w-64 hidden lg:flex h-screen lg:w-64 lg:h-screen">
+        <div class="p-2 lg:p-4 -mt-3 lg:mt-0">
+            <h1 class="text-xl font-bold hidden lg:block">Admin Panel</h1>
+            <ul class="lg:mt-4">
+                <li class="py-2">
+                    <a href="#" class="flex items-center toggle-dropdown p-1.5 rounded-md" data-target="user-dropdown">
+                        <i class="fa-solid fa-user mr-2"></i>
+                        Users
+                    </a>
+                    <ul class="p-2 ml-4 hidden" id="user-dropdown">
+<!--                        <li><a href="admin-panel.php?source=add_user" class="block p-1.5 hover:bg-gray-700 rounded-md">Add User</a></li>-->
+                        <li><a href="admin-panel.php?source=show_users" class="block p-1.5 hover:bg-gray-700 rounded-md">Show Users</a></li>
+                    </ul>
+                </li>
+                <li class="py-2">
+                    <a href="#" class="flex items-center toggle-dropdown p-1.5 rounded-md" data-target="country-dropdown">
+                        <i class="fa-solid fa-flag mr-2"></i>
+                        Countries
+                    </a>
+                    <ul class="p-2 ml-4 hidden" id="country-dropdown">
+                        <li><a href="admin-panel.php?source=add_country" class="block p-1.5 hover:bg-gray-700 rounded-md">Add Country</a></li>
+                        <li><a href="admin-panel.php?source=show_countries" class="block p-1.5 hover:bg-gray-700 rounded-md">Show Countries</a></li>
+                    </ul>
+                </li>
+                <li class="py-2">
+                    <a href="#" class="flex items-center toggle-dropdown p-1.5 rounded-md" data-target="city-dropdown">
+                        <i class="fa-solid fa-city mr-2"></i>
+                        Cities
+                    </a>
+                    <ul class="p-2 ml-4 hidden" id="city-dropdown">
+                        <li><a href="admin-panel.php?source=add_city" class="block p-1.5 hover:bg-gray-700 rounded-md">Add City</a></li>
+                        <li><a href="admin-panel.php?source=show_cities" class="block p-1.5 hover:bg-gray-700 rounded-md">Show Cities</a></li>
+                    </ul>
+                </li>
+                <li class="py-2">
+                    <a href="#" class="flex items-center toggle-dropdown p-1.5 rounded-md" data-target="message-dropdown">
+                        <i class="fa-solid fa-message mr-2"></i>
+                        Messages
+                    </a>
+                    <ul class="p-2 ml-4 hidden" id="message-dropdown">
+                        <li><a href="admin-panel.php?source=show_messages" class="block p-1.5 hover:bg-gray-700 rounded-md">Show Messages</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-grow p-8">
+        <?php if(empty($source)) : ?>
+            <h2 class="text-2xl font-bold mb-4">Welcome to Admin Panel</h2>
+
+        <?php endif; ?>
+
+        <?php if($source == 'show_users') : ?>
+            <h2 class="text-2xl font-bold mb-4">Users</h2>
+            <!-- Table for Users -->
+            <div class="overflow-x-auto">
+                <table class="table-auto min-w-full">
+                    <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">ID</th>
+                        <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                    </tr>
+                    </thead>
+                    <?php foreach($users as $key=>$value): ?>
+                        <tbody>
+                        <!-- Sample User Row (Replace with dynamic data) -->
+                        <tr>
+                            <td class="border px-4 py-2"><?= $value['id']?></td>
+                            <td class="border px-4 py-2"><?= $value['full_name']?></td>
+                            <td class="border px-4 py-2"><?= $value['email']?></td>
+<!--                            <td class="border px-4 py-2">-->
+<!--                                <button class="bg-indigo-700 hover:bg-indigo-600 text-white px-2 py-1 rounded mr-2">Edit</button>-->
+<!--                                <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Delete</button>-->
+<!--                            </td>-->
+                        </tr>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <?php if($source == 'show_countries') : ?>
+            <h2 class="text-2xl font-bold mb-4">Countries</h2>
+            <!-- Table for Users -->
+            <div class="overflow-x-auto">
+                <table class="table-auto min-w-full">
+                    <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">ID</th>
+                        <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Flag</th>
+                    </tr>
+                    </thead>
+                    <?php foreach($countries as $key=>$value): ?>
+                        <tbody>
+                        <!-- Sample User Row (Replace with dynamic data) -->
+                        <tr>
+                            <td class="border px-4 py-2"><?= $value['id']?></td>
+                            <td class="border px-4 py-2"><?= $value['name']?></td>
+                            <td class="border px-4 py-2">
+                                <img class="w-16" src="https://flagcdn.com/w320/<?php echo $value['short_name']; ?>.png" alt="<?php echo $property['name']; ?>"/>
+                            </td>
+                            <td class="border px-4 py-2 ">
+                                <div class="flex">
+                                    <a href="admin-panel.php?source=edit_country&id=<?= $value['id']?>" class="bg-indigo-700 hover:bg-indigo-600 text-white px-2 py-1 rounded mr-2">Edit</a>
+                                    <form action="services/admin/delete-country.php" method="POST">
+                                        <input name="country_id" value="<?= $value['id']?>" class="hidden"/>
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+                <p class="py-1"><?= getFlashMessage("delete-country-response")?></p>
+            </div>
+        <?php endif; ?>
+
+
+        <?php if($source == 'show_cities') : ?>
+            <h2 class="text-2xl font-bold mb-4">Cities</h2>
+            <!-- Table for Users -->
+            <div class="overflow-x-auto">
+                <table class="table-auto min-w-full">
+                    <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">ID</th>
+                        <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Country Name</th>
+                    </tr>
+                    </thead>
+                    <?php foreach($cities as $key=>$value): ?>
+                        <tbody>
+                        <!-- Sample User Row (Replace with dynamic data) -->
+                        <tr>
+                            <td class="border px-4 py-2"><?= $value['city_id']?></td>
+                            <td class="border px-4 py-2"><?= $value['city_name']?></td>
+                            <td class="border px-4 py-2"><?= $value['country_name']?></td>
+                            <td class="border px-4 py-2">
+                                <div class="flex">
+                                    <a href="admin-panel.php?source=edit_city&id=<?= $value['city_id']?>" class="bg-indigo-700 hover:bg-indigo-600 text-white px-2 py-1 rounded mr-2">Edit</a>
+                                    <form action="services/admin/delete-city.php" method="POST">
+                                        <input name="city_id" value="<?= $value['city_id']?>" class="hidden"/>
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+                <p class="py-1"><?= getFlashMessage("delete-city-response")?></p>
+            </div>
+        <?php endif; ?>
+
+
+        <?php if($source == 'add_country') : ?>
+            <h2 class="text-2xl font-bold mb-4">Add Country</h2>
+            <form action="../../services/admin/add-country.php" class="py-3 py-3 md:py-4" method="post" enctype="multipart/form-data">
+                <div class="rounded-md py-3 py-3 md:py-4">
+                    <label for="country_name" class="block text-md font-medium text-gray-700 mb-2">Name:</label>
+                    <input type="text" id="country_name" name="country_name" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" required>
+                </div>
+                <div class="rounded-md py-3 py-3 md:py-4">
+                    <label for="country_short_name" class="block text-md font-medium text-gray-700 mb-2">Short Name:</label>
+                    <input type="text" id="country_short_name" name="country_short_name" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" required>
+                    <p class="text-sm md:text-base mb-3 mt-2 text-gray-600">Important for flag images.</p>
+                </div>
+
+                <button type="submit" class="my-3 md:my-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Country</button>
+                <p class="py-1"><?php echo  getFlashMessage('country-add-response')?></p>
+            </form>
+        <?php endif; ?>
+
+
+        <?php if($source == 'add_city') : ?>
+            <h2 class="text-2xl font-bold mb-4">Add City</h2>
+            <form action="../../services/admin/add-city.php" class="py-3 py-3 md:py-4" method="post" enctype="multipart/form-data">
+                <div class="rounded-md py-3 py-3 md:py-4">
+                    <label for="city_name" class="block text-md font-medium text-gray-700 mb-2">Name:</label>
+                    <input type="text" id="city_name" name="city_name" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" required>
+                </div>
+                <div class="rounded-md py-3 py-3 md:py-4">
+                    <label for="countryDdl" class="block text-md font-medium text-gray-700 mb-2">Country</label>
+
+                    <select id="countryDdl" name="country_id" class="min-w-96 px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                        <option value="USA">USA</option>
+                        <option value="Canada">Canada</option>
+                        <option value="UK">UK</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <button type="submit" class="my-3 md:my-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add City</button>
+                <p class="py-1"><?php echo  getFlashMessage('city-add-response')?></p>
+
+            </form>
+        <?php endif; ?>
+
+        <?php if($source == 'show_messages') : ?>
+            <h2 class="text-2xl font-bold mb-4">Messages</h2>
+            <!-- Table for Messages -->
+            <div class="overflow-x-auto">
+                <table class="table-auto min-w-full">
+                    <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">ID</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Full Name</th>
+                        <th class="px-4 py-2 text-left">Message Title</th>
+                    </tr>
+                    </thead>
+                    <?php foreach($messages as $key=>$value): ?>
+                        <tbody>
+                        <tr>
+                            <td class="border px-4 py-2"><?= $value['id']?></td>
+                            <td class="border px-4 py-2"><?= $value['email']?></td>
+                            <td class="border px-4 py-2"><?= $value['full_name']?></td>
+                            <td class="border px-4 py-2"><?= $value['message_title']?></td>
+                            <td class="border px-4 py-2">
+                                <div class="flex">
+                                    <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded mr-2" onclick="openModal('<?php echo htmlspecialchars($value['message_title'], ENT_QUOTES); ?>', atob('<?php echo base64_encode(htmlspecialchars($value['message'], ENT_QUOTES)); ?>'))">View Message</button>
+                                    <form action="services/admin/delete-message.php" method="POST">
+                                        <input name="message_id" value="<?= $value['id'] ?>" class="hidden" />
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    <?php endforeach; ?>
+                </table>
+                <p class="py-1"><?= getFlashMessage("delete-message-response")?></p>
+            </div>
+            <div id="messageModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 modal-content">
+                    <div class="flex justify-between items-center">
+                        <h2 id="modalTitle" class="text-xl font-bold">Message</h2>
+                        <button type="button" class="text-red-500 hover:text-red-700" onclick="closeModal()">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+                    </div>
+                    <p id="modalMessage" class="mt-4"></p>
+                </div>
+            </div>
+        <?php endif; ?>
+
+<!--        --><?php //= strpos($source, 'edit_city') ?>
+        <?php if (strpos($source, 'edit_city') !== false) : ?>
+            <h2 class="text-2xl font-bold mb-4">Edit City</h2>
+            <form action="../../services/admin/edit-city.php" class="py-3 md:py-4" method="post">
+                <input name="city_id" value="<?= $city['id'] ?>" class="hidden">
+                <div class="rounded-md py-3 md:py-4">
+                    <label for="city_name" class="block text-md font-medium text-gray-700 mb-2">Name:</label>
+                    <input type="text" id="city_name" name="city_name" value="<?= $city['name'] ?>" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" required>
+                </div>
+                <div class="rounded-md py-3 md:py-4">
+                    <label for="countryDdl" class="block text-md font-medium text-gray-700 mb-2">Country</label>
+                    <select id="countryDdl" name="country_id" class="min-w-96 px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <button type="submit" class="my-3 md:my-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit City</button>
+                <p class="py-1"><?php echo getFlashMessage('edit-city-response') ?></p>
+            </form>
+        <?php endif; ?>
+
+        <?php if (strpos($source, 'edit_country') !== false) : ?>
+            <h2 class="text-2xl font-bold mb-4">Edit Country</h2>
+            <form action="../../services/admin/edit-country.php" class="py-3 md:py-4" method="post">
+                <input name="country_id" value="<?= $country['id'] ?>" class="hidden">
+                <div class="rounded-md py-3 md:py-4">
+                    <label for="country_name" class="block text-md font-medium text-gray-700 mb-2">Name:</label>
+                    <input type="text" id="country_name" name="country_name"  value="<?= $country['name'] ?>" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" >
+                </div>
+                <div class="rounded-md py-3 md:py-4">
+                    <label for="country_short_name" class="block text-md font-medium text-gray-700 mb-2">Short Name:</label>
+                    <input type="text" id="country_short_name" name="country_short_name" value="<?= $country['short_name'] ?>" class="min-w-96 px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-indigo-500" >
+                    <p class="text-sm md:text-base mb-3 mt-2 text-gray-600">Important for flag images.</p>
+                </div>
+
+                <button type="submit" class="my-3 md:my-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Edit Country</button>
+                <p class="py-1"><?php echo  getFlashMessage('edit-country-response')?></p>
+            </form>
+        <?php endif; ?>
+
+
+
+    </div>
+</div>
+
+<script>
+    // JavaScript to toggle dropdowns
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.toggle-dropdown');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if(button.classList.contains('bg-gray-700')) {
+                    button.classList.remove('bg-gray-700');
+                } else {
+                    button.classList.add('bg-gray-700');
+                }
+
+                const targetId = this.getAttribute('data-target');
+                const targetDropdown = document.getElementById(targetId);
+                targetDropdown.classList.toggle('hidden');
+            });
+
+        });
+    });
+</script>
+<script>
+    // JavaScript to toggle sidebar on small screens
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('container')
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleSidebar.addEventListener('click', function() {
+            sidebar.classList.toggle('hidden');
+            container.classList.toggle('flex')
+            sidebar.classList.toggle('h-screen');
+            sidebar.classList.toggle('w-full');
+        });
+    });
+</script>
+
+<script>
+    async function getCountries() {
+        try {
+            const response = await fetch('../../services/property/get-countries.php');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const countries = await response.json();
+            renderCountriesDdl(countries);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    function renderCountriesDdl(countries) {
+        const countryDdl = document.getElementById('countryDdl');
+        countryDdl.innerHTML = '';
+        const currentCountryId = '<?= $city['country_id'] ?>';
+
+        countries.forEach((country) => {
+            const selected = country.id == currentCountryId ? 'selected' : '';
+            countryDdl.innerHTML += `<option value="${country.id}" ${selected}>${country.name}</option>`;
+        });
+    }
+
+    if('<?php echo ($source == 'add_city') ?>' || '<?php echo ($source == 'edit_city') ?>') {
+        getCountries()
+    }
+
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+    if ('<?php echo ($source == 'show_messages') ?>') {
+        function openModal(messageTitle, messageContent) {
+            console.log(messageContent);
+            const decodedMessage = decodeHtml(messageContent);
+            const modal = document.getElementById('messageModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+
+            // Update the modal title with the provided message title
+            modalTitle.textContent = messageTitle;
+
+            // Set the decoded message as the inner HTML of the modal message
+            modalMessage.innerHTML = decodedMessage;
+
+            // Remove the 'hidden' class to display the modal
+            modal.classList.remove('hidden');
+
+            // Add event listener to close modal when clicking outside the modal content
+            setTimeout(() => {
+                window.addEventListener('click', outsideClickListener);
+            }, 0.1);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('messageModal');
+            modal.classList.add('hidden');
+
+            // Remove event listener when modal is closed
+            window.removeEventListener('click', outsideClickListener);
+        }
+
+        function outsideClickListener(event) {
+            const modal = document.getElementById('messageModal');
+            const modalContent = document.querySelector('.modal-content'); // Modal content element
+            if (!modalContent.contains(event.target)) {
+                closeModal();
+            }
+        }
+
+        // Optional: Add a close button inside the modal content to close the modal
+        document.querySelector('.fa-x').addEventListener('click', closeModal);
+    }
+
+
+</script>
+
+<script src="https://cdn.tailwindcss.com/"></script>
+
+</body>
+
+</html>

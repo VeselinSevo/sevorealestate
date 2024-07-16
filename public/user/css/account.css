@@ -1,0 +1,3 @@
+.toggle-checkbox:checked + .toggle-label .toggle-handle {
+    transform: translateX(100%);
+}

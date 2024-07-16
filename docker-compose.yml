@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sevorealestate
+      MYSQL_USER: sevo
+      MYSQL_PASSWORD: test
+    ports:
+      - "3306:3306"
+  php:
+    image: e1328322b4d84d41bf8d3c68b2f021f254f1a8793be4698e314848b9068817d0
+    container_name: sevorealestate
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - "80:80"
+    stdin_open: true
+    tty: true

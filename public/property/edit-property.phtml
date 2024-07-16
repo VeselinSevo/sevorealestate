@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a279dcf9f7.js" crossorigin="anonymous"></script>
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<?php require "public/navigation.phtml"; ?>
+
+<main class="container mx-auto md:max-w-screen-xl mt-8 md:mt-24 px-4 mb-8 md:mb-24">
+    <form id="property-form" action="services/property/edit-property.php" method="POST" enctype="multipart/form-data">
+        <input name="property_id" class="hidden" value="<?php echo $property['id']?>"/>
+        <div class="flex flex-col bg-white rounded-md shadow-md align-baseline p-6 md:p-6">
+
+
+
+            <!-- First Step: General Info -->
+            <div class="step" id="step-basic-info">
+                <h2 class="text-base md:text-lg font-bold text-indigo-600 mb-3 md:pl-4">Edit your property</h2>
+                <h1 class="text-xl md:text-2xl font-bold mb-4 md:mb-5 md:pl-4">General Info</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 pb-10">
+                    <!-- Property Name -->
+                    <div class="rounded-md md:p-4">
+                        <input class="hidden" name="id" value="<?php echo $property['id']?>">
+                        <label for="property-name" class="block text-md font-medium text-gray-700 mb-2">Property Name</label>
+                        <input type="text" id="property-name" name="name" value="<?php echo $property['name']?>"
+                               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <!-- Property Type -->
+                    <div class="rounded-md md:p-4">
+                        <label for="typeDdl" class="block text-md font-medium text-gray-700 mb-2">Property Type</label>
+                        <select id="typeDdl" name="type"
+                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+
+                        </select>
+                    </div>
+                    <!-- Property Price -->
+                    <div class="rounded-md md:p-4">
+                        <label for="property-price" class="block text-md font-medium text-gray-700 mb-2">Price</label>
+                        <div class="flex items-center">
+                            <input type="text" id="property-price" name="price" value="<?php echo $property['price']?>"
+                                   class="number-input w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                            <span class="ml-3 text-xl">$</span>
+                        </div>
+
+                    </div>
+                    <!-- Property Size -->
+                    <div class=" rounded-md md:p-4 ">
+                        <label for="property-price" class="block text-md font-medium text-gray-700 mb-2">Size</label>
+                        <div class="flex items-center">
+                            <input type="text" id="property-price" name="size" value="<?php echo $property['size']?>"
+                                   class="number-input w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                            <span class="ml-3 text-xl">m<sup>2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Step: Location -->
+            <div class="step hidden" id="step-location">
+                <h2 class="text-md md:text-lg font-bold text-indigo-600 mb-3 md:pl-4">Edit your property</h2>
+                <h1 class="text-xl md:text-2xl font-bold mb-4 md:pl-4">Location</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 pb-10">
+                    <!-- Location fields (Country, City, Address) -->
+                    <div class="rounded-md md:p-4 md:col-span-2">
+                        <label for="countryDdl" class="block text-md font-medium text-gray-700 mb-2">Country</label>
+                        <select id="countryDdl" name="country" class="w-full px-3 py-2 border rounded-md
+                        focus:outline-none focus:border-indigo-500"">
+                            <option value="USA">USA</option>
+                            <option value="Canada">Canada</option>
+                            <option value="UK">UK</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="rounded-md md:p-4">
+                        <label for="cityDdl" class="block text-md font-medium text-gray-700 mb-2">City</label>
+                        <select id="cityDdl" name="city_id" class="w-full px-3 py-2 border rounded-md
+                        focus:outline-none focus:border-indigo-500">
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="rounded-md md:p-4">
+                        <label for="address" class="block text-md font-medium text-gray-700 mb-2">Address</label>
+                        <input type="text" id="address" name="address" value="<?php echo $property['address']?>"
+                               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <!-- Zip Code -->
+                    <div class="rounded-md md:p-4">
+                        <label for="zip" class="block text-md font-medium text-gray-700 mb-2">Zip Code</label>
+                        <input type="text" id="zip" name="zip" value="<?php echo $property['zip_code']?>"
+                               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third Step: Images -->
+            <div class="step hidden" id="stepImages">
+                <h2 class="text-md md:text-lg font-bold text-indigo-600 mb-3 md:pl-4">Add your property</h2>
+                <h1 class="text-xl md:text-2xl font-bold mb-4 md:pl-4">Images</h1>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-6 pb-10">
+
+
+                    <div class="rounded-md md:p-4">
+                        <p class="block text-md font-medium text-gray-700 mb-2">Choose main image</p>
+                        <div id="main-image-drop-container" class="drop-container mt-5 flex flex-col px-3 py-2 bg-transparent text-indigo-700 rounded-md transition duration-300 border-2 border-dashed border-indigo-700 w-full h-72 items-center justify-center" draggable="true">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="69" height="51" viewBox="0 0 69 51" class="dropzone-content__image tw-mx-auto tw-mb-2"><defs><linearGradient id="icon-drop-folder_svg__a" x1="34.5" x2="34.5" y1="48.67" y2="0.19" gradientUnits="userSpaceOnUse"><stop offset="0.67" stop-color="#112caf"></stop><stop offset="0.77" stop-color="#2250f4"></stop></linearGradient></defs><path fill="url(#icon-drop-folder_svg__a)" d="M62.93 6.8H37.11L29.84.19H6.07a3.53 3.53 0 0 0-3.53 3.53v41.42a3.53 3.53 0 0 0 3.53 3.53h56.86a3.53 3.53 0 0 0 3.53-3.53V10.33a3.53 3.53 0 0 0-3.53-3.53"></path><path fill="#ffdd73" d="M6.83 12.56h53.01V35.1H6.83z"></path><path fill="#fff6d0" d="M10.27 9.83h53.01v22.54H10.27z"></path><path fill="#a6bffd" d="M63.17 50.81H5.83a3.46 3.46 0 0 1-3.5-3.06l-2.07-29a3.25 3.25 0 0 1 3.29-3.51h61.9a3.25 3.25 0 0 1 3.29 3.51l-2.07 29a3.46 3.46 0 0 1-3.5 3.06"></path>
+                                <path fill="url(#icon-drop-folder_svg__a)" d="M62.93 6.8H37.11L29.84.19H6.07a3.53 3.53 0 0 0-3.53 3.53v41.42a3.53 3.53 0 0 0 3.53 3.53h56.86a3.53 3.53 0 0 0 3.53-3.53V10.33a3.53 3.53 0 0 0-3.53-3.53"></path>
+                                <path fill="#ffdd73" d="M6.83 12.56h53.01V35.1H6.83z"></path>
+                                <path fill="#fff6d0" d="M10.27 9.83h53.01v22.54H10.27z"></path>
+                                <path fill="#a6bffd" d="M63.17 50.81H5.83a3.46 3.46 0 0 1-3.5-3.06l-2.07-29a3.25 3.25 0 0 1 3.29-3.51h61.9a3.25 3.25 0 0 1 3.29 3.51l-2.07 29a3.46 3.46 0 0 1-3.5 3.06"></path>
+                            </svg>
+                            <input type="file" id="main-image-input" name="main-image" class="hidden file-input" accept=".jpg, .jpeg, .png">
+
+
+                            <p class="block mt-6 text-md text-gray-700 mb-2">Drag and drop you image file here</p>
+                            <p class="block mt-5 text-md text-gray-700 mb-2">Or,
+                                <label for="main-image-input" data-file-name="" class="file-input cursor-pointer font-medium text-sm md:text-base underline">browse to upload.</label>
+                            </p>
+
+
+                        </div>
+                        <div id="main-image-preview" class="w-full py-2">
+                            No files currently selected for upload
+                        </div>
+                    </div>
+
+
+                    <div class="rounded-md md:p-4">
+                        <p class="block text-md font-medium text-gray-700 mb-2">Choose additional images</p>
+                        <div id="additional-images-drop-container" class="drop-container mt-5 flex flex-col px-3 py-2 bg-transparent text-indigo-700 rounded-md transition duration-300 border-2 border-dashed border-indigo-700 w-full h-72 items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="69" height="51" viewBox="0 0 69 51" class="dropzone-content__image tw-mx-auto tw-mb-2"><defs><linearGradient id="icon-drop-folder_svg__a" x1="34.5" x2="34.5" y1="48.67" y2="0.19" gradientUnits="userSpaceOnUse"><stop offset="0.67" stop-color="#112caf"></stop><stop offset="0.77" stop-color="#2250f4"></stop></linearGradient></defs><path fill="url(#icon-drop-folder_svg__a)" d="M62.93 6.8H37.11L29.84.19H6.07a3.53 3.53 0 0 0-3.53 3.53v41.42a3.53 3.53 0 0 0 3.53 3.53h56.86a3.53 3.53 0 0 0 3.53-3.53V10.33a3.53 3.53 0 0 0-3.53-3.53"></path><path fill="#ffdd73" d="M6.83 12.56h53.01V35.1H6.83z"></path><path fill="#fff6d0" d="M10.27 9.83h53.01v22.54H10.27z"></path><path fill="#a6bffd" d="M63.17 50.81H5.83a3.46 3.46 0 0 1-3.5-3.06l-2.07-29a3.25 3.25 0 0 1 3.29-3.51h61.9a3.25 3.25 0 0 1 3.29 3.51l-2.07 29a3.46 3.46 0 0 1-3.5 3.06"></path>
+                                <path fill="url(#icon-drop-folder_svg__a)" d="M62.93 6.8H37.11L29.84.19H6.07a3.53 3.53 0 0 0-3.53 3.53v41.42a3.53 3.53 0 0 0 3.53 3.53h56.86a3.53 3.53 0 0 0 3.53-3.53V10.33a3.53 3.53 0 0 0-3.53-3.53"></path>
+                                <path fill="#ffdd73" d="M6.83 12.56h53.01V35.1H6.83z"></path>
+                                <path fill="#fff6d0" d="M10.27 9.83h53.01v22.54H10.27z"></path>
+                                <path fill="#a6bffd" d="M63.17 50.81H5.83a3.46 3.46 0 0 1-3.5-3.06l-2.07-29a3.25 3.25 0 0 1 3.29-3.51h61.9a3.25 3.25 0 0 1 3.29 3.51l-2.07 29a3.46 3.46 0 0 1-3.5 3.06"></path>
+                            </svg>
+
+                            <input type="file" id="additional-images-input" name="additional-images[]" multiple class="hidden file-input" accept=".jpg, .jpeg, .png">
+                            <p class="block mt-6 text-md text-gray-700 mb-2">Drag and drop you image files here</p>
+                            <p class="block mt-5 text-md text-gray-700 mb-2">Or,
+                                <label for="additional-images-input" data-file-name="" class="file-input cursor-pointer font-medium text-sm md:text-base underline">browse to upload.</label>
+                            </p>
+
+
+                        </div>
+                        <div id="additional-images-preview" class="py-2">
+                            No files currently selected for upload
+                        </div>
+                    </div>
+
+
+                </div>
+                <h2 class="text-sm md:text-base mb-3 md:pl-4 text-gray-600"><span class="font-bold text-indigo-600">Tip: &nbsp</span>Ensure your images are of high resolution as they significantly impact your property's visibility. Studies indicate that properties with quality images have a 68% higher chance of attracting attention within the first six months.</h2>
+            </div>
+
+            <!-- Fourth Step: Description -->
+            <div class="step hidden" id="step-description">
+                <h2 class="text-md md:text-lg font-bold text-indigo-600 mb-3 md:pl-4">Add your property</h2>
+                <h1 class="text-xl md:text-2xl font-bold mb-4 md:pl-4">Description</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 pb-2">
+                    <!-- Property Description -->
+                    <div class="rounded-md md:p-6 md:col-span-2">
+                        <label for="description" class="block text-md font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="description" name="description" rows="6"
+                                  class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500"><?php echo $property['description']?></textarea>
+                    </div>
+                </div>
+
+                <div class="rounded-md md:p-6 md:pb-8">
+                    <label for="full_description" class="block text-md font-medium text-gray-700 mb-2">Full Description</label>
+                    <div id="editor">
+                        <p>Hello World!</p>
+                        <p>Some initial <strong>bold</strong> text</p>
+                        <p><br /></p>
+                    </div>
+                </div>
+
+                <!-- Hidden input field to store Quill editor content -->
+                <input type="hidden" id="full_description" name="full_description">
+                <h2 class="text-sm md:text-base mb-3 md:pl-4 text-gray-600"><span class="font-bold text-indigo-600">Tip: &nbsp</span>When crafting your property description, focus on highlighting unique features and amenities to captivate potential buyers or renters and increase interest in your listing.</h2>
+
+            </div>
+
+            <!-- Fifth Step: Structure -->
+            <div class="step hidden" id="step-structure">
+                <h2 class="text-md md:text-lg font-bold text-indigo-600 mb-3 md:pl-4">Edit your property</h2>
+                <h1 class="text-xl md:text-2xl font-bold mb-4 md:pl-4">Structure</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 pb-10">
+                    <!-- Structure fields (bedrooms, bathrooms, balconies) -->
+                    <div class="rounded-md md:p-4">
+                        <label for="bedrooms" class="block text-md font-medium text-gray-700 mb-2">Number of Bedrooms</label>
+                        <input type="text" id="bedrooms" name="bedrooms"  value="<?php echo $property['bedrooms']?>"
+                               class="number-input w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="rounded-md md:p-4">
+                        <label for="bathrooms" class="block text-md font-medium text-gray-700 mb-2">Number of Bathrooms</label>
+                        <input type="text" id="bathrooms" name="bathrooms" value="<?php echo $property['bathrooms']?>"
+                               class="number-input w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="rounded-md md:p-4">
+                        <label for="balconies" class="block text-md font-medium text-gray-700 mb-2">Number of Balconies</label>
+                        <input type="text" id="balconies" name="balconies" value="<?php echo $property['balconies']?>"
+                               class="number-input w-full px-3 py-2 border rounded-md focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step Indicator -->
+            <!--            <div id="step-indicator" class="text-center mb-8"></div>-->
+            <div id="step-indicator" class="flex justify-center mb-6">
+                <div class="step-indicator-box w-6 h-2 !important mx-1 rounded-sm shadow-sm" style="box-shadow: 0 1px 2px rgba(0.3, 0.3, 0.3, 0.3);"></div>
+                <div class="step-indicator-box w-6 h-2 !important mx-1 rounded-sm shadow-sm" style="box-shadow: 0 1px 2px rgba(0.3, 0.3, 0.3, 0.3);"></div>
+                <div class="step-indicator-box w-6 h-2 !important mx-1 rounded-sm shadow-sm" style="box-shadow: 0 1px 2px rgba(0.3, 0.3, 0.3, 0.3);"></div>
+                <div class="step-indicator-box w-6 h-2 !important mx-1 rounded-sm shadow-sm" style="box-shadow: 0 1px 2px rgba(0.3, 0.3, 0.3, 0.3);"></div>
+            </div>
+        </div>
+        <div class="flex justify-between mt-4 md:mt-6">
+            <button type="button" id="prev-step" class="prev-step-button text-sm md:text-base hidden w-28 m-2 md:m-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400">Previous</button>
+            <button type="button" id="next-step" class="next-step-button text-sm md:text-base w-28 m-2 md:m-4 px-4 py-2 rounded-md bg-indigo-600 leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Next</button>
+            <button type="submit" id="submit-property" class="next-step-button text-base md:text-lg hidden w-40 m-2 md:m-4 px-4 py-2 rounded-md bg-indigo-600 leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Edit Property</button>
+        </div>
+    </form>
+</main>
+<script>
+    const preselectCountryId = "<?php echo $property['country_id']; ?>";
+    const preselectCityId = "<?php echo $property['city_id']; ?>";
+    const propertyId = "<?php echo $property['id']; ?>"
+</script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+
+    const description = "<?php echo $property['full_description']; ?>";
+    quill.root.innerHTML = description;
+
+
+    document.querySelector('#full_description').value = description;
+
+    document.getElementById('property-form').addEventListener('submit', function(event) {
+
+        var fullDescription = quill.root.innerHTML;
+
+        // Set the HTML content as the value of the hidden input field
+        document.querySelector('#full_description').value = fullDescription;
+    });
+</script>
+<script src="https://cdn.tailwindcss.com/"></script>
+<script type="module" src="public/property/js/edit-property.js"></script>
+</body>
+</html>

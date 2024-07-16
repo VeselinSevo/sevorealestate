@@ -1,0 +1,139 @@
+<?php
+session_start();
+?>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<?php require "public/head.phtml"; ?>
+<?php require "public/navigation.phtml"; ?>
+
+<body class="bg-gray-100">
+<main class="container mx-auto md:max-w-screen-xl mt-8 px-4">
+    <div class="flex items-center justify-center container mx-auto md:max-w-screen-xl mt-8 md:mt-24 px-4 mb-8 md:mb-24">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h1 class="text-2xl font-bold text-indigo-600 mb-4">Contact Us</h1>
+            <form action="services/user/send-contact-message.php" method="POST" class="space-y-4" id="contactForm">
+                <div>
+                    <?php if (!isset($_SESSION['user'])): ?>
+                        <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" name="full_name" id="full_name" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("fullname-validation-msg") ?></p>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="email" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500">
+                            <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("email-validation-msg") ?></p>
+                        </div>
+                    <?php else: ?>
+                        <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" name="full_name" id="full_name" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500" value="<?= $_SESSION['user']['full_name'] ?>">
+                        <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("fullname-validation-msg") ?></p>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="email" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500" value="<?= $_SESSION['user']['email'] ?>">
+                            <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("email-validation-msg") ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <label for="message_title" class="block text-sm font-medium text-gray-700">Message Title</label>
+                    <input type="text" name="message_title" id="message_title" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("message-title-validation-msg") ?></p>
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                    <div id="quillEditor" class="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-indigo-500 focus:border-indigo-500" style="height: 200px;"></div>
+                    <input type="hidden" name="message" id="message">
+                    <p class="error-message text-red-500 font-thin p-1"><?= getFlashMessage("message-validation-msg")?></p>
+                </div>
+                <div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Send Message</button>
+                </div>
+                <p><?= getFlashMessage("contact-message-response")?></p>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('contactForm');
+        const quill = new Quill('#quillEditor', {
+            theme: 'snow'
+        });
+        const messageInput = document.getElementById('message');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Reset previous error messages
+            const errorMessages = form.querySelectorAll('.error-message');
+            errorMessages.forEach(function (errorMessage) {
+                errorMessage.textContent = '';
+            });
+
+            // Initialize errors array
+            const errors = [];
+
+            // Validate full name
+            const fullNameInput = form.querySelector('#full_name');
+            const fullNameValue = fullNameInput.value.trim();
+            if (!fullNameValue) {
+                errors.push('Full name is required.');
+                displayErrorMessage(fullNameInput, 'Full name is required.');
+            } else if (!isValidName(fullNameValue)) {
+                errors.push('Full name is not valid. It must start with a capital letter and contain only letters and spaces (not at the beginning or end).');
+                displayErrorMessage(fullNameInput, 'Full name is not valid. It must start with a capital letter and contain only letters and spaces (not at the beginning or end).');
+            }
+
+            // Validate email
+            const emailInput = form.querySelector('#email');
+            const emailValue = emailInput.value.trim();
+            if (!emailValue) {
+                errors.push('Email is required.');
+                displayErrorMessage(emailInput, 'Email is required.');
+            } else if (!isValidEmail(emailValue)) {
+                errors.push('Email is not valid.');
+                displayErrorMessage(emailInput, 'Email is not valid.');
+            }
+
+            // Validate message title
+            const messageTitleInput = form.querySelector('#message_title');
+            const messageTitleValue = messageTitleInput.value.trim();
+            if (!messageTitleValue) {
+                errors.push('Message title is required.');
+                displayErrorMessage(messageTitleInput, 'Message title is required.');
+            }
+
+            // Validate message
+
+            const messageValue = quill.root.innerHTML.trim();
+            if (!messageValue || quill.getText().trim().length === 0) {
+                errors.push('Message is required.');
+                displayErrorMessage(document.querySelector('#quillEditor'), 'Message is required.');
+            }
+
+            // If there are no errors, submit the form
+            if (errors.length === 0) {
+                // Set the value of the hidden message input to the Quill editor content
+                messageInput.value = messageValue;
+                form.submit();
+            }
+        });
+
+        // Function to display error messages
+        function displayErrorMessage(input, message) {
+            const errorMessage = input.parentElement.querySelector('.error-message');
+            errorMessage.textContent = message;
+        }
+
+        // Function to validate full name
+        function isValidName(name) {
+            return /^[A-Z][a-zA-Z\s]+[a-zA-Z]$/.test(name);
+        }
+
+        // Function to validate email
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    });
+</script>
+</body>
+</html>
